@@ -19,7 +19,9 @@ function CreateFormDialog() {
   const [isLoading, setIsLoading] = useState(false);
   const promptRef = useRef<HTMLTextAreaElement>(null);
 
-  const createForm = async () => {};
+  const createForm = async () => {
+    const prompt = promptRef.current?.value;
+  };
 
   return (
     <Dialog>
@@ -44,7 +46,7 @@ function CreateFormDialog() {
         <Textarea
           ref={promptRef}
           placeholder="Enter the prompt"
-          className="shadow-md"
+          className="min-h-32"
         />
         <Button onClick={createForm} disabled={isLoading}>
           {isLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
