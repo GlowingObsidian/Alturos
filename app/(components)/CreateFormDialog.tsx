@@ -33,6 +33,7 @@ function CreateFormDialog() {
 
         if (result.status === "error") setError(result.error);
         else {
+          router.refresh();
           router.push(`/dashboard/form/${result.id}`);
         }
       })
@@ -43,7 +44,7 @@ function CreateFormDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="m-10">Create new form</Button>
+        <Button>Create new form</Button>
       </DialogTrigger>
       <DialogContent className="max-w-md">
         <DialogHeader>
