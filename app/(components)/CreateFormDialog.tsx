@@ -12,15 +12,32 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { ExclamationTriangleIcon, ReloadIcon } from "@radix-ui/react-icons";
+import axios, { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
 function CreateFormDialog() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const promptRef = useRef<HTMLTextAreaElement>(null);
+  const router = useRouter();
 
   const createForm = async () => {
     const prompt = promptRef.current?.value;
+    setIsLoading(true);
+
+    axios
+      .patch("/api/form", { prompt })
+      .then((response) => {
+        const result = response.data;
+
+        if (result.status === "error") setError(result.error);
+        else {
+          router.push(`/dashboard/form/${result.id}`);
+        }
+      })
+      .catch((e: AxiosError) => setError(e.message))
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -38,8 +55,9 @@ function CreateFormDialog() {
         </DialogHeader>
         {error && (
           <Alert variant="destructive">
-            <ExclamationTriangleIcon className="h-5 w-5" />
-            <AlertTitle>Error</AlertTitle>
+            <AlertTitle className="flex gap-x-2">
+              <ExclamationTriangleIcon className="h-4 w-4" /> Error
+            </AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
