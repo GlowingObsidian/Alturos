@@ -27,7 +27,7 @@ function CreateFormDialog() {
     setIsLoading(true);
 
     axios
-      .patch("/api/form", { prompt })
+      .post("/api/form", { prompt })
       .then((response) => {
         const result = response.data;
 
@@ -49,8 +49,8 @@ function CreateFormDialog() {
         <DialogHeader>
           <DialogTitle>New Form</DialogTitle>
           <DialogDescription>
-            Write your form description here and our AI will create the form for
-            you.
+            Write your form description here and our AI will do the generation
+            magic ✨
           </DialogDescription>
         </DialogHeader>
         {error && (
@@ -64,11 +64,12 @@ function CreateFormDialog() {
         <Textarea
           ref={promptRef}
           placeholder="Enter the prompt"
-          className="min-h-32"
+          disabled={isLoading}
+          className={`min-h-32 ${isLoading && "ai-glow"}`}
         />
         <Button onClick={createForm} disabled={isLoading}>
           {isLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
-          Create
+          {isLoading ? "Generating" : "Generate"}
         </Button>
       </DialogContent>
     </Dialog>
