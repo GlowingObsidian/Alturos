@@ -25,6 +25,7 @@ function CreateFormDialog() {
   const createForm = async () => {
     const prompt = promptRef.current?.value;
     setIsLoading(true);
+    setError(null);
 
     axios
       .post("/api/form", { prompt })
@@ -42,7 +43,7 @@ function CreateFormDialog() {
   };
 
   return (
-    <Dialog>
+    <Dialog onOpenChange={(open) => !open && setError(null)}>
       <DialogTrigger asChild>
         <Button>Create new form</Button>
       </DialogTrigger>

@@ -9,12 +9,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Form as FormType } from "@prisma/client";
+import { FormEvent, useRef } from "react";
 import FormCheckBox from "./formFields/FormCheckBox";
 import FormInput from "./formFields/FormInput";
 import FormRadioGroup from "./formFields/FormRadioGroup";
 import FormSelect from "./formFields/FormSelect";
 import FormTextArea from "./formFields/FormTextArea";
-import { FormEvent, useRef } from "react";
 
 interface Field {
   label: string;
@@ -111,22 +111,20 @@ function Form({ form }: { form: FormType }) {
   };
 
   return (
-    <>
-      <Card className="container mx-auto max-w-lg">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">{formStructure.name}</CardTitle>
-          <CardDescription>{formStructure.description}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form ref={formRef} className="space-y-7" onSubmit={handleSubmit}>
-            {formStructure.fields.map((field, index) =>
-              renderField(index, field)
-            )}
-            <Button>Submit</Button>
-          </form>
-        </CardContent>
-      </Card>
-    </>
+    <Card className="container mx-auto max-w-xl">
+      <CardHeader className="text-center">
+        <CardTitle className="text-2xl">{formStructure.name}</CardTitle>
+        <CardDescription>{formStructure.description}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form ref={formRef} className="space-y-7" onSubmit={handleSubmit}>
+          {formStructure.fields.map((field, index) =>
+            renderField(index, field)
+          )}
+          <Button>Submit</Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 }
 
