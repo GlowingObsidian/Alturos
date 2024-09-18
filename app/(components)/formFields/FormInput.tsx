@@ -1,15 +1,18 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useState } from "react";
 
 function FormInput({
-  name,
+  label,
+  placeholder,
   value,
   dtype,
   required,
 }: {
-  name: string;
+  label: string;
+  placeholder: string;
   value: string;
   dtype?: string;
   required?: boolean;
@@ -23,8 +26,10 @@ function FormInput({
 
   return (
     <div>
+      <Label htmlFor={value}>{label}</Label>
       <Input
-        placeholder={name}
+        id={value}
+        placeholder={placeholder}
         type={dtype === "number" ? "number" : ""}
         name={value}
         onChange={(e) => dtype === "email" && validate(e.target.value)}

@@ -1,9 +1,19 @@
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-function FormTextArea({ name, value }: { name: string; value: string }) {
+function FormTextArea({
+  label,
+  placeholder,
+  value,
+}: {
+  label: string;
+  placeholder: string;
+  value: string;
+}) {
   return (
     <div>
-      <Textarea placeholder={name} name={value} />
+      <Label htmlFor={value}>{label}</Label>
+      <Textarea id={value} placeholder={placeholder} name={value} />
     </div>
   );
 }

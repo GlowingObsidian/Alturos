@@ -1,3 +1,4 @@
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -7,21 +8,24 @@ import {
 } from "@/components/ui/select";
 
 function FormSelect({
-  name,
+  label,
+  placeholder,
   value,
   required,
   options,
 }: {
-  name: string;
+  label: string;
+  placeholder: string;
   value: string;
   options: string[];
   required: boolean;
 }) {
   return (
     <div>
+      <Label>{label}</Label>
       <Select name={value} required={required}>
         <SelectTrigger>
-          <SelectValue placeholder={name} />
+          <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
           {options.map((option, index) => (
