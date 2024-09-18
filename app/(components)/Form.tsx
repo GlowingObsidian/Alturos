@@ -37,7 +37,7 @@ interface GeneratedForm {
 function Form({ form }: { form: FormType }) {
   const formRef = useRef<HTMLFormElement>(null);
 
-  const formData: GeneratedForm = JSON.parse(form.data);
+  const formStructure: GeneratedForm = JSON.parse(form.data);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,15 +45,13 @@ function Form({ form }: { form: FormType }) {
 
     const data: { [key: string]: string | string[] } = {};
 
-    formData.forEach((value, key) => {
-      if (data[key]) {
-        data[key] = Array.isArray(data[key])
-          ? [...(data[key] as string[]), value as string]
-          : [data[key] as string, value as string];
-      } else {
-        data[key] = value as string;
-      }
-    });
+    formStructure.fields.map(
+      (field) =>
+        (data[field.value] =
+          field.type !== "checkbox"
+            ? (formData.getAll(field.value)[0] as string)
+            : (formData.getAll(field.value) as string[]))
+    );
 
     console.log(data);
   };
@@ -116,12 +114,14 @@ function Form({ form }: { form: FormType }) {
     <>
       <Card className="container mx-auto max-w-lg">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">{formData.name}</CardTitle>
-          <CardDescription>{formData.description}</CardDescription>
+          <CardTitle className="text-2xl">{formStructure.name}</CardTitle>
+          <CardDescription>{formStructure.description}</CardDescription>
         </CardHeader>
         <CardContent>
           <form ref={formRef} className="space-y-7" onSubmit={handleSubmit}>
-            {formData.fields.map((field, index) => renderField(index, field))}
+            {formStructure.fields.map((field, index) =>
+              renderField(index, field)
+            )}
             <Button>Submit</Button>
           </form>
         </CardContent>

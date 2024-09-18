@@ -12,7 +12,7 @@ async function page({ params }: { params: { id: string } }) {
   if (!form) return notFound();
 
   return (
-    <div>
+    <div className="p-5">
       <Form form={form} />
     </div>
   );

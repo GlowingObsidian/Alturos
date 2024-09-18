@@ -6,7 +6,7 @@ function page() {
   revalidatePath("/dashboard");
 
   return (
-    <div className="container mx-auto space-y-5">
+    <div className="container mx-auto p-5 space-y-5">
       <CreateFormDialog />
       <FormList />
     </div>
