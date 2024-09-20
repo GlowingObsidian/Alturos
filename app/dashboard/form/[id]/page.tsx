@@ -1,3 +1,4 @@
+import DeleteFormButton from "@/app/(components)/DeleteFormButton";
 import Form from "@/app/(components)/Form";
 import prisma from "@/prisma/client";
 import { notFound } from "next/navigation";
@@ -11,7 +12,14 @@ async function page({ params }: { params: { id: string } }) {
 
   if (!form) return notFound();
 
-  return <Form form={form} />;
+  return (
+    <div className="space-y-5">
+      <div className="flex justify-end">
+        <DeleteFormButton form={form} />
+      </div>
+      <Form form={form} />;
+    </div>
+  );
 }
 
 export default page;

@@ -13,6 +13,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { ExclamationTriangleIcon, ReloadIcon } from "@radix-ui/react-icons";
 import axios, { AxiosError } from "axios";
+import { SquarePlus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
@@ -45,7 +46,9 @@ function CreateFormDialog() {
   return (
     <Dialog onOpenChange={(open) => !open && setError(null)}>
       <DialogTrigger asChild>
-        <Button>Create new form</Button>
+        <Button className="flex gap-x-2 items-center">
+          <SquarePlus className="w-4 h-4" /> Create new form
+        </Button>
       </DialogTrigger>
       <DialogContent className="max-w-md">
         <DialogHeader>
