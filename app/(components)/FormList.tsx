@@ -2,7 +2,11 @@ import prisma from "@/prisma/client";
 import FormCard from "./FormCard";
 
 async function FormList() {
-  const forms = await prisma.form.findMany();
+  const forms = await prisma.form.findMany({
+    orderBy: {
+      updatedOn: "desc",
+    },
+  });
 
   return (
     <div className="grid gap-x-5 gap-y-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
