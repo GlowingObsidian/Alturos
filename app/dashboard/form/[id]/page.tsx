@@ -11,11 +11,7 @@ async function page({ params }: { params: { id: string } }) {
 
   if (!form) return notFound();
 
-  return (
-    <div className="p-5">
-      <Form form={form} />
-    </div>
-  );
+  return <Form form={form} />;
 }
 
 export default page;

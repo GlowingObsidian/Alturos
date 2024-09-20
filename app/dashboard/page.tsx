@@ -1,12 +1,10 @@
-import { revalidatePath } from "next/cache";
 import CreateFormDialog from "../(components)/CreateFormDialog";
 import FormList from "../(components)/FormList";
 
 function page() {
-  revalidatePath("/dashboard");
-
   return (
-    <div className="container mx-auto p-5 space-y-5">
+    <div className="container mx-auto space-y-5">
+      <h1 className="text-3xl font-bold mb-5">My Forms</h1>
       <CreateFormDialog />
       <FormList />
     </div>

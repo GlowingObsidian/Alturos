@@ -2,6 +2,7 @@ import { instruction } from "@/app/instruction";
 import { removeJSON } from "@/app/services/removejson";
 import prisma from "@/prisma/client";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -22,6 +23,8 @@ export async function POST(req: NextRequest) {
         prompt: prompt,
       },
     });
+
+    revalidatePath("/dashboard", "page");
 
     return NextResponse.json(
       { status: "success", id: newForm.id },
