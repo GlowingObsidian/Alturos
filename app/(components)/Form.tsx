@@ -36,7 +36,6 @@ interface GeneratedForm {
 
 function Form({ form }: { form: FormType }) {
   const formRef = useRef<HTMLFormElement>(null);
-
   const formStructure: GeneratedForm = JSON.parse(form.data);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -75,6 +74,7 @@ function Form({ form }: { form: FormType }) {
           label={field.label}
           placeholder={field.placeholder}
           value={field.value}
+          required={field.required}
         />
       );
     if (field.type === "radio_group" && field.options)
@@ -94,7 +94,6 @@ function Form({ form }: { form: FormType }) {
           label={field.label}
           value={field.value}
           options={field.options}
-          required={field.required}
         />
       );
     if (field.type === "select" && field.placeholder && field.options)

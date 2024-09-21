@@ -15,6 +15,7 @@ datasource db {
 
 model Form {
   id        String   @id @default(cuid())
+  userId    String
   updatedOn DateTime @default(now())
   data      String
   prompt    String

@@ -1,4 +1,4 @@
-export function removeJSON(json: string) {
+export function removeMarkdown(json: string) {
   let cleaned = json;
   cleaned = cleaned.replace("```json", "");
   cleaned = cleaned.replace("```", "");

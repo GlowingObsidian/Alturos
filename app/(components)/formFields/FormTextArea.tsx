@@ -5,15 +5,22 @@ function FormTextArea({
   label,
   placeholder,
   value,
+  required,
 }: {
   label: string;
   placeholder: string;
   value: string;
+  required: boolean;
 }) {
   return (
     <div>
       <Label htmlFor={value}>{label}</Label>
-      <Textarea id={value} placeholder={placeholder} name={value} />
+      <Textarea
+        id={value}
+        placeholder={placeholder}
+        name={value}
+        required={required}
+      />
     </div>
   );
 }

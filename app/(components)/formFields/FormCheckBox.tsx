@@ -9,7 +9,6 @@ function FormCheckBox({
   label: string;
   value: string;
   options: string[];
-  required: boolean;
 }) {
   return (
     <div className="w-full gap-y-2 flex flex-col items-start">
