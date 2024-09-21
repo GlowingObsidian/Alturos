@@ -25,7 +25,9 @@ function NavigationList() {
           <li
             key={navLink.name}
             className={`${
-              pathname === navLink.href ? "bg-gray-100 rounded-md" : ""
+              pathname === navLink.href
+                ? "bg-gray-100 rounded-md text-primary"
+                : ""
             } p-3 hover:text-primary`}
           >
             <Link
