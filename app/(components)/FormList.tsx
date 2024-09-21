@@ -1,8 +1,14 @@
 import prisma from "@/prisma/client";
 import FormCard from "./FormCard";
+import { auth } from "@clerk/nextjs/server";
 
 async function FormList() {
+  const { userId } = auth();
+
   const forms = await prisma.form.findMany({
+    where: {
+      userId: userId!,
+    },
     orderBy: {
       updatedOn: "desc",
     },

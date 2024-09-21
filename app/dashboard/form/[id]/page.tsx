@@ -17,7 +17,7 @@ async function page({ params }: { params: { id: string } }) {
       <div className="flex justify-end">
         <DeleteFormButton form={form} />
       </div>
-      <Form form={form} />;
+      <Form form={form} />
     </div>
   );
 }

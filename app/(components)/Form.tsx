@@ -15,6 +15,8 @@ import FormInput from "./formFields/FormInput";
 import FormRadioGroup from "./formFields/FormRadioGroup";
 import FormSelect from "./formFields/FormSelect";
 import FormTextArea from "./formFields/FormTextArea";
+import { notFound, usePathname } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
 
 interface Field {
   label: string;
@@ -35,6 +37,14 @@ interface GeneratedForm {
 }
 
 function Form({ form }: { form: FormType }) {
+  const path = usePathname();
+
+  if (path.includes("dashboard")) {
+    const { userId } = useAuth();
+
+    if (userId && form.userId !== userId) notFound();
+  }
+
   const formRef = useRef<HTMLFormElement>(null);
   const formStructure: GeneratedForm = JSON.parse(form.data);
 
@@ -96,7 +106,11 @@ function Form({ form }: { form: FormType }) {
           options={field.options}
         />
       );
-    if (field.type === "select" && field.placeholder && field.options)
+    if (
+      field.type === "select" &&
+      field.placeholder !== undefined &&
+      field.options
+    )
       return (
         <FormSelect
           key={key}
