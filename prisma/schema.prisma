@@ -14,9 +14,18 @@ datasource db {
 }
 
 model Form {
-  id        String   @id @default(cuid())
+  id        String     @id @default(cuid())
   userId    String
-  updatedOn DateTime @default(now())
+  updatedOn DateTime   @default(now())
   data      String
   prompt    String
+  Response  Response[]
+}
+
+model Response {
+  id     String @id @default(cuid())
+  userId String
+  form   Form   @relation(fields: [formid], references: [id])
+  formid String
+  data   String
 }

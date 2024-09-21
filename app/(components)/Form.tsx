@@ -17,6 +17,7 @@ import FormSelect from "./formFields/FormSelect";
 import FormTextArea from "./formFields/FormTextArea";
 import { notFound, usePathname } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
+import axios from "axios";
 
 interface Field {
   label: string;
@@ -61,8 +62,6 @@ function Form({ form }: { form: FormType }) {
             ? (formData.getAll(field.value)[0] as string)
             : (formData.getAll(field.value) as string[]))
     );
-
-    console.log(data);
   };
 
   const renderField = (key: number, field: Field) => {
