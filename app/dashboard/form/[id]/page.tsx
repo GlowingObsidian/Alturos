@@ -1,5 +1,6 @@
 import DeleteFormButton from "@/app/(components)/DeleteFormButton";
 import Form from "@/app/(components)/Form";
+import FormShare from "@/app/(components)/FormShare";
 import prisma from "@/prisma/client";
 import { notFound } from "next/navigation";
 
@@ -14,7 +15,8 @@ async function page({ params }: { params: { id: string } }) {
 
   return (
     <div className="space-y-5">
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-x-2">
+        <FormShare url={process.env.URL || ""} formId={form.id} />
         <DeleteFormButton form={form} />
       </div>
       <Form form={form} />

@@ -39,8 +39,9 @@ interface GeneratedForm {
 function Form({ form }: { form: FormType }) {
   const { userId } = useAuth();
   const path = usePathname();
+  const isEditing = path.includes("dashboard");
 
-  if (path.includes("dashboard")) {
+  if (isEditing) {
     if (userId && form.userId !== userId) notFound();
   }
 
@@ -133,7 +134,7 @@ function Form({ form }: { form: FormType }) {
           {formStructure.fields.map((field, index) =>
             renderField(index, field)
           )}
-          <Button>Submit</Button>
+          {!isEditing && <Button>Submit</Button>}
         </form>
       </CardContent>
     </Card>
