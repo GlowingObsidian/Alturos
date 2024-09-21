@@ -1,9 +1,7 @@
 "use client";
 
-import { Form } from "@prisma/client";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -13,11 +11,12 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Form } from "@prisma/client";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import axios from "axios";
+import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ReloadIcon } from "@radix-ui/react-icons";
-import { Trash } from "lucide-react";
 
 function DeleteFormButton({ form }: { form: Form }) {
   const router = useRouter();

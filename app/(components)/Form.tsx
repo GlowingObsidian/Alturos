@@ -37,11 +37,10 @@ interface GeneratedForm {
 }
 
 function Form({ form }: { form: FormType }) {
+  const { userId } = useAuth();
   const path = usePathname();
 
   if (path.includes("dashboard")) {
-    const { userId } = useAuth();
-
     if (userId && form.userId !== userId) notFound();
   }
 

@@ -15,7 +15,7 @@ function FormCheckBox({
       <div className="w-full flex items-center justify-between">
         <p className="text-sm text-stone-500">{label}</p>
       </div>
-      <div className="grid grid-cols-4 gap-x-2 gap-y-2">
+      <div className="flex flex-wrap  gap-x-2 gap-y-2">
         {options.map((option) => (
           <div key={option} className="flex items-center space-x-2">
             <Checkbox id={option} name={value} value={option} />

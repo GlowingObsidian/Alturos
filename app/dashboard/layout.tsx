@@ -1,9 +1,5 @@
-import Logo from "@/app/public/logo.png";
-import Image from "next/image";
-import Link from "next/link";
-import NavigationList from "../(components)/NavigationList";
-import Sidebar from "../(components)/Sidebar";
 import Header from "../(components)/Header";
+import Sidebar from "../(components)/Sidebar";
 
 export default function DashboardLayout({
   children,
