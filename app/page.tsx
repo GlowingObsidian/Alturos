@@ -6,13 +6,11 @@ import step3 from "@/app/public/step3.gif";
 import strikethrough from "@/app/public/strikethrough.png";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader } from "@/components/ui/card";
+import { auth } from "@clerk/nextjs/server";
 import { Nanum_Pen_Script } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import Header from "./(components)/Header";
 import Logo from "./(components)/Logo";
-import { useAuth } from "@clerk/nextjs";
-import { auth } from "@clerk/nextjs/server";
 
 const handwriting = Nanum_Pen_Script({ subsets: ["latin"], weight: "400" });
 
@@ -117,6 +115,7 @@ function page() {
                 src={step.gif}
                 alt=""
                 className="object-contain rounded-sm border"
+                unoptimized
               />
             </CardDescription>
           </Card>
