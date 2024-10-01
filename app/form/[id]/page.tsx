@@ -1,6 +1,8 @@
+import AlreadyResponded from "@/app/(components)/AlreadyResponded";
 import FloatingBadge from "@/app/(components)/FloatingBagde";
 import Form, { GeneratedForm } from "@/app/(components)/Form";
 import prisma from "@/prisma/client";
+import { auth } from "@clerk/nextjs/server";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -41,6 +43,25 @@ async function page({
   });
 
   if (!form) return notFound();
+
+  const { userId } = auth();
+
+  if (userId && !form.multipleResponses) {
+    const responseExists = await prisma.response.findFirst({
+      where: {
+        formid: form.id,
+        userId: userId,
+      },
+    });
+
+    if (responseExists) {
+      return (
+        <div className="p-10">
+          <AlreadyResponded />
+        </div>
+      );
+    }
+  }
 
   return (
     <div className="p-10">

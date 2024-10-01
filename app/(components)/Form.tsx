@@ -8,17 +8,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { SignInButton, SignOutButton, useAuth, useUser } from "@clerk/nextjs";
 import { Form as FormType } from "@prisma/client";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import axios from "axios";
+import { LogIn, LogOut } from "lucide-react";
+import { notFound, usePathname } from "next/navigation";
 import { FormEvent, useRef, useState } from "react";
 import FormCheckBox from "./formFields/FormCheckBox";
 import FormInput from "./formFields/FormInput";
 import FormRadioGroup from "./formFields/FormRadioGroup";
 import FormSelect from "./formFields/FormSelect";
 import FormTextArea from "./formFields/FormTextArea";
-import { notFound, usePathname } from "next/navigation";
-import { useAuth } from "@clerk/nextjs";
-import axios from "axios";
-import { ReloadIcon } from "@radix-ui/react-icons";
 import ResponseRecorded from "./ResponseRecorded";
 
 export interface Field {
@@ -41,10 +42,12 @@ export interface GeneratedForm {
 
 function Form({ form }: { form: FormType }) {
   const { userId } = useAuth();
+  const { user } = useUser();
   const path = usePathname();
   const [responded, setResponded] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isEditing = path.includes("dashboard");
+  const formUrl = `/form/${form.id}`;
 
   if (isEditing) {
     if (userId && form.userId !== userId) notFound();
@@ -55,6 +58,7 @@ function Form({ form }: { form: FormType }) {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const formData = new FormData(formRef.current!);
 
     const data: { [key: string]: string | string[] } = {};
@@ -145,18 +149,49 @@ function Form({ form }: { form: FormType }) {
         <CardDescription>{formStructure.description}</CardDescription>
       </CardHeader>
       <CardContent>
+        {!isEditing && !form.multipleResponses && !userId && (
+          <SignInButton forceRedirectUrl={formUrl}>
+            <p className="cursor-pointer text-sm font-bold mb-2 flex gap-x-2 justify-center items-center text-primary">
+              <LogIn className="w-4 h-4" /> You need to sign in to submit this
+              form.
+            </p>
+          </SignInButton>
+        )}
+        {!isEditing && !form.multipleResponses && userId && user && (
+          <p className="text-sm mb-2 text-center text-primary">
+            Signed in as{" "}
+            <span className="font-bold">
+              {user.primaryEmailAddress!.emailAddress || ""}
+            </span>{" "}
+          </p>
+        )}
         <form ref={formRef} className="space-y-7" onSubmit={handleSubmit}>
           {formStructure.fields.map((field, index) =>
             renderField(index, field)
           )}
           {!isEditing && (
-            <Button disabled={isSubmitting}>
-              {isSubmitting ? (
-                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                "Submit"
+            <div className="flex justify-between ">
+              <Button
+                disabled={isSubmitting || (!form.multipleResponses && !userId)}
+              >
+                {isSubmitting ? (
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  "Submit"
+                )}
+              </Button>
+
+              {!form.multipleResponses && userId && (
+                <SignOutButton redirectUrl={formUrl}>
+                  <Button type="button" variant="ghost">
+                    <p className="flex justify items-center gap-x-2 text-sm text-primary">
+                      <LogOut className="w-4 h-4" />
+                      Sign Out
+                    </p>
+                  </Button>
+                </SignOutButton>
               )}
-            </Button>
+            </div>
           )}
         </form>
       </CardContent>
