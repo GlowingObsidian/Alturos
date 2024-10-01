@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    revalidatePath("/dashboard", "page");
+    revalidatePath("/dashboard");
 
     return NextResponse.json(
       { status: "success", id: newForm.id },

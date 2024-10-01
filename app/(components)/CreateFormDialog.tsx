@@ -35,7 +35,6 @@ function CreateFormDialog() {
 
         if (result.status === "error") setError(result.error);
         else {
-          router.refresh();
           router.push(`/dashboard/form/${result.id}`);
         }
       })

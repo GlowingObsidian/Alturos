@@ -1,4 +1,5 @@
 import prisma from "@/prisma/client";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(
@@ -10,6 +11,8 @@ export async function DELETE(
       id: params.id,
     },
   });
+
+  revalidatePath("/dashboard");
 
   return NextResponse.json(deletedForm, { status: 200 });
 }

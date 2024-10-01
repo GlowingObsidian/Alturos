@@ -26,7 +26,7 @@ model Form {
 model Response {
   id     String @id @default(cuid())
   userId String
-  form   Form   @relation(fields: [formid], references: [id])
+  form   Form   @relation(fields: [formid], references: [id], onDelete: Cascade)
   formid String
   data   String
 }

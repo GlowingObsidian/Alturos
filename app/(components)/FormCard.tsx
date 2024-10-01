@@ -1,11 +1,14 @@
 "use client";
 
 import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { Form } from "@prisma/client";
 import { CalendarIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-function FormCard({ form }: { form: Form }) {
+function FormCard({
+  form,
+}: {
+  form: { id: string; updatedOn: Date; data: string };
+}) {
   const router = useRouter();
 
   return (

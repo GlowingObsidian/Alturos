@@ -12,6 +12,11 @@ async function FormList() {
     orderBy: {
       updatedOn: "desc",
     },
+    select: {
+      id: true,
+      updatedOn: true,
+      data: true,
+    },
   });
 
   return (
