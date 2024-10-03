@@ -16,3 +16,21 @@ export async function DELETE(
 
   return NextResponse.json(deletedForm, { status: 200 });
 }
+
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const body = await req.json();
+
+  const updatedForm = await prisma.form.update({
+    where: {
+      id: params.id,
+    },
+    data: {
+      ...body,
+    },
+  });
+
+  return NextResponse.json(updatedForm, { status: 200 });
+}

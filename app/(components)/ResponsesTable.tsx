@@ -23,7 +23,7 @@ interface Form {
 }
 
 function ResponsesTable({ form }: { form: Form }) {
-  const formatData = (data: string | string[]) => {
+  const formatData = (data: unknown) => {
     if (Array.isArray(data)) {
       let values = "";
       data.map((data) => (values = values + data + ","));
@@ -31,7 +31,7 @@ function ResponsesTable({ form }: { form: Form }) {
       return values;
     }
 
-    return data;
+    return data as string;
   };
 
   const headers: string[] = JSON.parse(form.data).fields.map(
@@ -52,7 +52,7 @@ function ResponsesTable({ form }: { form: Form }) {
       <TableBody>
         {responses.map((response, index) => (
           <TableRow key={index}>
-            {Object.values(response).map((data: any) => (
+            {Object.values(response).map((data) => (
               <TableCell key={formatData(data)}>{formatData(data)}</TableCell>
             ))}
           </TableRow>

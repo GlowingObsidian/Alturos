@@ -141,7 +141,7 @@ function Form({ form }: { form: FormType }) {
   };
 
   return responded ? (
-    <ResponseRecorded />
+    <ResponseRecorded multipleResponses={form.multipleResponses} />
   ) : (
     <Card className="container mx-auto max-w-xl">
       <CardHeader className="text-center">
@@ -170,7 +170,7 @@ function Form({ form }: { form: FormType }) {
             renderField(index, field)
           )}
           {!isEditing && (
-            <div className="flex justify-between ">
+            <div className="flex justify-end">
               <Button
                 disabled={isSubmitting || (!form.multipleResponses && !userId)}
               >
