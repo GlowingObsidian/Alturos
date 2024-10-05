@@ -1,6 +1,6 @@
 "use client";
 
-import { LibraryBig, MessageSquareQuote, ChartLine, Cog } from "lucide-react";
+import { Flame, LibraryBig, MessageSquareQuote } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -11,8 +11,7 @@ const navLinks = [
     href: "/dashboard/responses",
     icon: <MessageSquareQuote />,
   },
-  { name: "Analytics", href: "/dashboard/analytics", icon: <ChartLine /> },
-  { name: "Settings", href: "/dashboard/settings", icon: <Cog /> },
+  { name: "Subscription", href: "/dashboard/subscription", icon: <Flame /> },
 ];
 
 function NavigationList() {
