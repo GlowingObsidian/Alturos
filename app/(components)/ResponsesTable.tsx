@@ -41,24 +41,30 @@ function ResponsesTable({ form }: { form: Form }) {
   const responses = form.Response.map((response) => JSON.parse(response.data));
 
   return (
-    <Table className="whitespace-nowrap">
-      <TableHeader>
-        <TableRow>
-          {headers.map((header) => (
-            <TableHead key={header}>{header}</TableHead>
-          ))}
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {responses.map((response, index) => (
-          <TableRow key={index}>
-            {Object.values(response).map((data) => (
-              <TableCell key={formatData(data)}>{formatData(data)}</TableCell>
+    <div className="rounded-md border bg-background">
+      <Table className="whitespace-nowrap">
+        <TableHeader>
+          <TableRow>
+            {headers.map((header) => (
+              <TableHead key={header} className="py-5">
+                {header}
+              </TableHead>
             ))}
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {responses.map((response, index) => (
+            <TableRow key={index}>
+              {Object.values(response).map((data) => (
+                <TableCell key={formatData(data)} className="py-5">
+                  {formatData(data)}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 }
 
