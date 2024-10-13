@@ -30,3 +30,9 @@ model Response {
   formid String
   data   String
 }
+
+model Subscriber {
+  id String @id @default(cuid())
+  userId String
+  subscription String
+}

@@ -94,7 +94,7 @@ function Form({ form }: { form: FormType }) {
           required={field.required}
         />
       );
-    if (field.type === "text_area" && field.placeholder)
+    else if (field.type === "text_area" && field.placeholder)
       return (
         <FormTextArea
           key={key}
@@ -104,7 +104,7 @@ function Form({ form }: { form: FormType }) {
           required={field.required}
         />
       );
-    if (field.type === "radio_group" && field.options)
+    else if (field.type === "radio_group" && field.options)
       return (
         <FormRadioGroup
           key={key}
@@ -114,7 +114,7 @@ function Form({ form }: { form: FormType }) {
           required={field.required}
         />
       );
-    if (field.type === "checkbox" && field.options)
+    else if (field.type === "checkbox" && field.options)
       return (
         <FormCheckBox
           key={key}
@@ -123,7 +123,7 @@ function Form({ form }: { form: FormType }) {
           options={field.options}
         />
       );
-    if (
+    else if (
       field.type === "select" &&
       field.placeholder !== undefined &&
       field.options

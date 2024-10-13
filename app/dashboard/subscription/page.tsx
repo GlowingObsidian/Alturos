@@ -1,4 +1,4 @@
-import { Check, X } from "lucide-react";
+import { subscriptions } from "@/app/services/pricing";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,42 +8,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import prisma from "@/prisma/client";
+import { currentUser } from "@clerk/nextjs/server";
+import { Check, X } from "lucide-react";
+import Link from "next/link";
 
-const subscriptions = [
-  {
-    name: "Free",
-    price: "$0",
-    description: "Basic features for personal use",
-    features: ["Create up to 3 forms", "250 form responses"],
-    notIncluded: ["Priority support", "Form styling"],
-  },
-  {
-    name: "Professional",
-    price: "$99",
-    description: "Advanced features for professionals",
-    features: [
-      "Create up to 10 forms",
-      "1,000 form responses",
-      "Priority support",
-    ],
-    notIncluded: ["Form styling"],
-  },
-  {
-    name: "Business",
-    price: "$199",
-    description: "Enterprise-grade solutions for teams",
-    features: [
-      "Unlimited form creation",
-      "Unlimited responses",
-      "24/7 support",
-      "Form styling",
-    ],
-    notIncluded: [],
-  },
-];
+async function page() {
+  const user = await currentUser();
+  const currentUserEmailAddress = user?.emailAddresses[0].emailAddress;
 
-function page() {
-  const currentSubscription = "Free";
+  let currentSubscription = "Free";
+
+  const subscriber = await prisma.subscriber.findFirst({
+    where: {
+      userId: currentUserEmailAddress,
+    },
+  });
+
+  if (subscriber) currentSubscription = subscriber.subscription;
 
   return (
     <div className="">
@@ -111,20 +93,25 @@ function page() {
                     currentSubscription === sub.name ? "default" : "outline"
                   }
                   className="w-full"
+                  asChild
                 >
-                  {currentSubscription === sub.name
-                    ? "Current Plan"
-                    : "Select Plan"}
+                  {currentSubscription === sub.name ? (
+                    <span>Current Plan</span>
+                  ) : (
+                    <Link
+                      href={
+                        sub.paymentLink +
+                        `?prefilled_email=${currentUserEmailAddress}`
+                      }
+                      target="_blank"
+                    >
+                      Select Plan
+                    </Link>
+                  )}
                 </Button>
               </CardFooter>
             </Card>
           ))}
-        </div>
-
-        <div className="mt-10 text-center">
-          <p className="text-sm text-gray-500">
-            You can change your subscription at any time.
-          </p>
         </div>
       </div>
     </div>
