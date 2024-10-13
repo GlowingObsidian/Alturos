@@ -7,6 +7,7 @@ import DeleteFormButton from "./DeleteFormButton";
 import FormShare from "./FormShare";
 import { useState } from "react";
 import axios from "axios";
+import UpdateFormDialog from "./UpdateFormDialog";
 
 function FormEditBar({ form, url }: { form: Form; url: string }) {
   const [formTakesMultipleResponses, setFormTakesMultipleResponses] = useState(
@@ -30,6 +31,7 @@ function FormEditBar({ form, url }: { form: Form; url: string }) {
         </Label>
       </div>
       <div className="flex gap-x-2">
+        <UpdateFormDialog form={form} />
         <FormShare url={url} formId={form.id} />
         <DeleteFormButton form={form} />
       </div>

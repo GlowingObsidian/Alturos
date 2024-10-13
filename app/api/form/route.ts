@@ -1,4 +1,4 @@
-import { instruction } from "@/app/instruction";
+import { createInstruction } from "@/app/instruction";
 import prisma from "@/prisma/client";
 import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
   const model = genAI.getGenerativeModel({
     model: "gemini-1.5-flash",
-    systemInstruction: instruction,
+    systemInstruction: createInstruction,
     generationConfig: {
       responseMimeType: "application/json",
     },
