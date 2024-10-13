@@ -27,7 +27,10 @@ function DeleteFormButton({ form }: { form: Form }) {
 
     axios
       .delete(`/api/form/${form.id}`)
-      .then(() => router.push("/dashboard"))
+      .then(() => {
+        router.push("/dashboard");
+        router.refresh();
+      })
       .catch((e) => console.log(e))
       .finally(() => setIsLoading(false));
   };

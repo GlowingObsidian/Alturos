@@ -1,5 +1,4 @@
 import { instruction } from "@/app/instruction";
-import { removeMarkdown } from "@/app/services/removeMarkdown";
 import prisma from "@/prisma/client";
 import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -14,12 +13,18 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
 
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = genAI.getGenerativeModel({
+    model: "gemini-1.5-flash",
+    systemInstruction: instruction,
+    generationConfig: {
+      responseMimeType: "application/json",
+    },
+  });
 
   const prompt = body.prompt;
-  const output = await model.generateContent(prompt + instruction);
+  const output = await model.generateContent(prompt);
 
-  const generation = JSON.parse(removeMarkdown(output.response.text()));
+  const generation = JSON.parse(output.response.text());
 
   if (generation.status === "success") {
     const newForm = await prisma.form.create({

@@ -170,17 +170,10 @@ function Form({ form }: { form: FormType }) {
             renderField(index, field)
           )}
           {!isEditing && (
-            <div className="flex justify-end">
-              <Button
-                disabled={isSubmitting || (!form.multipleResponses && !userId)}
-              >
-                {isSubmitting ? (
-                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  "Submit"
-                )}
-              </Button>
-
+            <div
+              className="flex justify-end
+            "
+            >
               {!form.multipleResponses && userId && (
                 <SignOutButton redirectUrl={formUrl}>
                   <Button type="button" variant="ghost">
@@ -191,6 +184,15 @@ function Form({ form }: { form: FormType }) {
                   </Button>
                 </SignOutButton>
               )}
+              <Button
+                disabled={isSubmitting || (!form.multipleResponses && !userId)}
+              >
+                {isSubmitting ? (
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  "Submit"
+                )}
+              </Button>
             </div>
           )}
         </form>

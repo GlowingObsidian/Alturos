@@ -36,6 +36,7 @@ function CreateFormDialog() {
         if (result.status === "error") setError(result.error);
         else {
           router.push(`/dashboard/form/${result.id}`);
+          router.refresh();
         }
       })
       .catch((e: AxiosError) => setError(e.message))
