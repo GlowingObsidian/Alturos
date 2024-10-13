@@ -14,7 +14,7 @@ const navLinks = [
   { name: "Subscription", href: "/dashboard/subscription", icon: <Flame /> },
 ];
 
-function NavigationList() {
+function NavigationList({ action }: { action: () => void }) {
   const pathname = usePathname();
 
   return (
@@ -32,6 +32,7 @@ function NavigationList() {
             <Link
               href={navLink.href}
               className="flex items-center gap-2 font-bold"
+              onClick={action}
             >
               {navLink.icon}
               <p>{navLink.name}</p>

@@ -1,3 +1,5 @@
+"use client";
+
 import Logo from "@/app/public/logo.png";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -12,16 +14,23 @@ import {
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import NavigationList from "./NavigationList";
+import { useState } from "react";
 
 function MobileSidebar() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Sheet>
+    <Sheet open={isOpen}>
       <SheetTrigger asChild className="lg:hidden">
-        <Button variant="ghost">
+        <Button variant="ghost" onClick={() => setIsOpen(true)}>
           <Menu />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" aria-describedby={undefined}>
+      <SheetContent
+        side="left"
+        aria-describedby={undefined}
+        onInteractOutside={() => setIsOpen(false)}
+      >
         <SheetHeader>
           <SheetTitle asChild>
             <Link href="/" className="flex justify-center">
@@ -34,7 +43,7 @@ function MobileSidebar() {
               />
             </Link>
           </SheetTitle>
-          <NavigationList />
+          <NavigationList action={() => setIsOpen(false)} />
         </SheetHeader>
       </SheetContent>
     </Sheet>
