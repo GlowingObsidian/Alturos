@@ -1,10 +1,10 @@
 import {
   Table,
-  TableHeader,
-  TableRow,
-  TableHead,
   TableBody,
   TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 import { Field } from "./Form";
 
@@ -41,7 +41,7 @@ function ResponsesTable({ form }: { form: Form }) {
   const responses = form.Response.map((response) => JSON.parse(response.data));
 
   return (
-    <Table>
+    <Table className="whitespace-nowrap">
       <TableHeader>
         <TableRow>
           {headers.map((header) => (

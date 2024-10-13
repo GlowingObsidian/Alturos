@@ -16,7 +16,7 @@ export default function DashboardLayout({
         <Header />
 
         {/* Main Area */}
-        <main className="p-5">{children}</main>
+        <main className="p-5 overflow-x-auto">{children}</main>
       </div>
     </div>
   );
