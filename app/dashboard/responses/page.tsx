@@ -1,3 +1,4 @@
+import ExportAsXLSX from "@/app/(components)/ExportAsXLSX";
 import FormResponseSelector from "@/app/(components)/FormResponseSelector";
 import ResponsesTable from "@/app/(components)/ResponsesTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,7 +26,12 @@ async function page({ searchParams }: { searchParams: { index: string } }) {
   return (
     <div className="space-y-5">
       <h1 className="text-3xl font-bold mb-5">Responses</h1>
-      <FormResponseSelector forms={forms} />
+      <div className="flex gap-4 flex-wrap">
+        <FormResponseSelector forms={forms} />
+        {form && form.Response.length > 0 && (
+          <ExportAsXLSX form={form} fileName={form.id} />
+        )}
+      </div>
       {form && (
         <div className="grid gap-4 md:grid-cols-2 mb-8">
           <Card>
