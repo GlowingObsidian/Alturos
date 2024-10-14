@@ -170,10 +170,7 @@ function Form({ form }: { form: FormType }) {
             renderField(index, field)
           )}
           {!isEditing && (
-            <div
-              className="flex justify-end
-            "
-            >
+            <div className="flex justify-end gap-x-2">
               {!form.multipleResponses && userId && (
                 <SignOutButton redirectUrl={formUrl}>
                   <Button type="button" variant="ghost">
