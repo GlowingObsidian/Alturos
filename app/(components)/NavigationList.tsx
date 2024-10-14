@@ -14,7 +14,7 @@ const navLinks = [
   { name: "Subscription", href: "/dashboard/subscription", icon: <Flame /> },
 ];
 
-function NavigationList({ action }: { action: () => void }) {
+function NavigationList({ action }: { action?: () => void }) {
   const pathname = usePathname();
 
   return (
