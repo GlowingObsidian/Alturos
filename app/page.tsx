@@ -11,6 +11,8 @@ import { Nanum_Pen_Script } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "./(components)/Logo";
+import Footer from "./(components)/Footer";
+import SubscriptionPlans from "./(components)/SubscriptionPlans";
 
 const handwriting = Nanum_Pen_Script({ subsets: ["latin"], weight: "400" });
 
@@ -96,31 +98,47 @@ function page() {
         </p>
         <p>The great new buzz in town!</p>
       </section>
-      <p className="text-2xl md:text-4xl font-bold text-center mt-14">
-        1-2-3. It{"'s"} that{" "}
-        <span className={"text-primary " + handwriting.className}>Simple!</span>
-      </p>
-      <div className="flex w-full flex-wrap gap-x-5 gap-y-5 justify-evenly my-10 p-5 ">
-        {steps.map((step) => (
-          <Card key={step.title} className="max-w-sm">
-            <CardHeader
-              className={
-                "text-center text-3xl font-bold " + handwriting.className
-              }
-            >
-              {step.title}
-            </CardHeader>
-            <CardDescription className="p-6">
-              <Image
-                src={step.gif}
-                alt=""
-                className="object-contain rounded-sm border"
-                unoptimized
-              />
-            </CardDescription>
-          </Card>
-        ))}
-      </div>
+      <section>
+        <p className="text-2xl md:text-4xl font-bold text-center mt-14">
+          1-2-3. It{"'s"} that{" "}
+          <span className={"text-primary " + handwriting.className}>
+            Simple!
+          </span>
+        </p>
+        <div className="flex w-full flex-wrap gap-x-5 gap-y-5 justify-evenly my-10 p-5 ">
+          {steps.map((step) => (
+            <Card key={step.title} className="max-w-sm">
+              <CardHeader
+                className={
+                  "text-center text-3xl font-bold " + handwriting.className
+                }
+              >
+                {step.title}
+              </CardHeader>
+              <CardDescription className="p-6">
+                <Image
+                  src={step.gif}
+                  alt=""
+                  className="object-contain rounded-sm border"
+                  unoptimized
+                />
+              </CardDescription>
+            </Card>
+          ))}
+        </div>
+      </section>
+      <section>
+        <div className="container mx-auto px-4 mb-5">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-4">
+            Simple, Transparent Pricing
+          </h2>
+          <p className="text-lg text-center text-gray-600 mb-12">
+            Choose the plan that&apos;s right for you
+          </p>
+          <SubscriptionPlans showcase />
+        </div>
+      </section>
+      <Footer />
     </div>
   );
 }
