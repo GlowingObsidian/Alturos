@@ -64,7 +64,7 @@ async function page({
   }
 
   return (
-    <div className="p-10 bg-gradient-to-r from-red-500 to-yellow-500 min-h-screen">
+    <div className="p-10 min-h-screen">
       <Form form={form} />
       <FloatingBadge />
     </div>

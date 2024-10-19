@@ -145,7 +145,7 @@ function Form({ form }: { form: FormType }) {
     <ResponseRecorded multipleResponses={form.multipleResponses} />
   ) : (
     <ThemeProvider>
-      <Card className="container mx-auto max-w-xl bg-[#FFFF00] text-[#FF00FF]">
+      <Card className="container mx-auto max-w-xl">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">{formStructure.name}</CardTitle>
           <CardDescription>{formStructure.description}</CardDescription>
