@@ -21,6 +21,7 @@ import FormRadioGroup from "./formFields/FormRadioGroup";
 import FormSelect from "./formFields/FormSelect";
 import FormTextArea from "./formFields/FormTextArea";
 import ResponseRecorded from "./ResponseRecorded";
+import { ThemeProvider } from "next-themes";
 
 export interface Field {
   label: string;
@@ -143,58 +144,62 @@ function Form({ form }: { form: FormType }) {
   return responded ? (
     <ResponseRecorded multipleResponses={form.multipleResponses} />
   ) : (
-    <Card className="container mx-auto max-w-xl">
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl">{formStructure.name}</CardTitle>
-        <CardDescription>{formStructure.description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        {!isEditing && !form.multipleResponses && !userId && (
-          <SignInButton forceRedirectUrl={formUrl}>
-            <p className="cursor-pointer text-sm font-bold mb-2 flex gap-x-2 justify-center items-center text-primary">
-              <LogIn className="w-4 h-4" /> You need to sign in to submit this
-              form.
+    <ThemeProvider>
+      <Card className="container mx-auto max-w-xl bg-[#FFFF00] text-[#FF00FF]">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl">{formStructure.name}</CardTitle>
+          <CardDescription>{formStructure.description}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {!isEditing && !form.multipleResponses && !userId && (
+            <SignInButton forceRedirectUrl={formUrl}>
+              <p className="cursor-pointer text-sm font-bold mb-2 flex gap-x-2 justify-center items-center text-primary">
+                <LogIn className="w-4 h-4" /> You need to sign in to submit this
+                form.
+              </p>
+            </SignInButton>
+          )}
+          {!isEditing && !form.multipleResponses && userId && user && (
+            <p className="text-sm mb-2 text-center text-primary">
+              Signed in as{" "}
+              <span className="font-bold">
+                {user.primaryEmailAddress!.emailAddress || ""}
+              </span>{" "}
             </p>
-          </SignInButton>
-        )}
-        {!isEditing && !form.multipleResponses && userId && user && (
-          <p className="text-sm mb-2 text-center text-primary">
-            Signed in as{" "}
-            <span className="font-bold">
-              {user.primaryEmailAddress!.emailAddress || ""}
-            </span>{" "}
-          </p>
-        )}
-        <form ref={formRef} className="space-y-7" onSubmit={handleSubmit}>
-          {formStructure.fields.map((field, index) =>
-            renderField(index, field)
           )}
-          {!isEditing && (
-            <div className="flex justify-end gap-x-2">
-              {!form.multipleResponses && userId && (
-                <SignOutButton redirectUrl={formUrl}>
-                  <Button type="button" variant="ghost">
-                    <p className="flex justify items-center gap-x-2 text-sm text-primary">
-                      <LogOut className="w-4 h-4" />
-                      Sign Out
-                    </p>
-                  </Button>
-                </SignOutButton>
-              )}
-              <Button
-                disabled={isSubmitting || (!form.multipleResponses && !userId)}
-              >
-                {isSubmitting ? (
-                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  "Submit"
+          <form ref={formRef} className="space-y-7" onSubmit={handleSubmit}>
+            {formStructure.fields.map((field, index) =>
+              renderField(index, field)
+            )}
+            {!isEditing && (
+              <div className="flex justify-end gap-x-2">
+                {!form.multipleResponses && userId && (
+                  <SignOutButton redirectUrl={formUrl}>
+                    <Button type="button" variant="ghost">
+                      <p className="flex justify items-center gap-x-2 text-sm text-primary">
+                        <LogOut className="w-4 h-4" />
+                        Sign Out
+                      </p>
+                    </Button>
+                  </SignOutButton>
                 )}
-              </Button>
-            </div>
-          )}
-        </form>
-      </CardContent>
-    </Card>
+                <Button
+                  disabled={
+                    isSubmitting || (!form.multipleResponses && !userId)
+                  }
+                >
+                  {isSubmitting ? (
+                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    "Submit"
+                  )}
+                </Button>
+              </div>
+            )}
+          </form>
+        </CardContent>
+      </Card>
+    </ThemeProvider>
   );
 }
 

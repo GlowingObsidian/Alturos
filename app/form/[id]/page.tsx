@@ -1,5 +1,5 @@
 import AlreadyResponded from "@/app/(components)/AlreadyResponded";
-import FloatingBadge from "@/app/(components)/FloatingBagde";
+import FloatingBadge from "@/app/(components)/FloatingBadge";
 import Form, { GeneratedForm } from "@/app/(components)/Form";
 import prisma from "@/prisma/client";
 import { auth } from "@clerk/nextjs/server";
@@ -64,7 +64,7 @@ async function page({
   }
 
   return (
-    <div className="p-10">
+    <div className="p-10 bg-gradient-to-r from-red-500 to-yellow-500 min-h-screen">
       <Form form={form} />
       <FloatingBadge />
     </div>
