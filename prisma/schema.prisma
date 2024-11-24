@@ -15,13 +15,15 @@ datasource db {
 }
 
 model Form {
-  id                String     @id @default(cuid())
-  userId            String
-  updatedOn         DateTime   @default(now())
-  data              String
-  prompt            String
-  multipleResponses Boolean    @default(false)
-  Response          Response[]
+  id                 String     @id @default(cuid())
+  userId             String
+  updatedOn          DateTime   @default(now())
+  data               String
+  prompt             String
+  multipleResponses  Boolean    @default(false)
+  acceptingResponses Boolean    @default(false)
+  shareResponses     Boolean    @default(false)
+  Response           Response[]
 }
 
 model Response {

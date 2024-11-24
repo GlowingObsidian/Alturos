@@ -6,6 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import RequiredField from "../RequiredField";
 
 function FormSelect({
   label,
@@ -13,23 +14,28 @@ function FormSelect({
   value,
   required,
   options,
+  disabled,
 }: {
   label: string;
   placeholder: string;
   value: string;
   options: string[];
   required: boolean;
+  disabled: boolean;
 }) {
   return (
     <div>
-      <Label>{label}</Label>
+      <Label>
+        {label}
+        {required && <RequiredField />}
+      </Label>
       <Select name={value} required={required}>
         <SelectTrigger>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
           {options.map((option, index) => (
-            <SelectItem key={index} value={option}>
+            <SelectItem key={index} value={option} disabled={disabled}>
               {option}
             </SelectItem>
           ))}

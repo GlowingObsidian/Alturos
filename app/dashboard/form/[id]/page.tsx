@@ -15,7 +15,7 @@ async function page({ params }: { params: { id: string } }) {
   return (
     <div className="space-y-5">
       <FormEditBar form={form} url={process.env.URL || ""} />
-      <div className="w-full bg-purple-400">
+      <div className="w-full">
         <Form form={form} />
       </div>
     </div>

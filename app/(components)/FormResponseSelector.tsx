@@ -10,7 +10,13 @@ import {
 import { Form } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
-function FormResponseSelector({ forms }: { forms: Form[] }) {
+function FormResponseSelector({
+  forms,
+  current,
+}: {
+  forms: Form[];
+  current?: string;
+}) {
   const router = useRouter();
 
   const handleSelect = (index: string) => {
@@ -20,7 +26,13 @@ function FormResponseSelector({ forms }: { forms: Form[] }) {
   return (
     <Select onValueChange={handleSelect}>
       <SelectTrigger className="max-w-xs">
-        <SelectValue placeholder="Select Form" />
+        <SelectValue
+          placeholder={
+            current
+              ? JSON.parse(forms[parseInt(current)].data).name
+              : "Select Form"
+          }
+        />
       </SelectTrigger>
       <SelectContent>
         {forms.map((form, index) => (

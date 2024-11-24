@@ -83,7 +83,7 @@ function Form({ form }: { form: FormType }) {
       .finally(() => setIsSubmitting(false));
   };
 
-  const renderField = (key: number, field: Field) => {
+  const renderField = (key: number, field: Field, isEditing: boolean) => {
     if (field.type === "input" && field.placeholder)
       return (
         <FormInput
@@ -93,6 +93,7 @@ function Form({ form }: { form: FormType }) {
           value={field.value}
           dtype={field.dtype}
           required={field.required}
+          disabled={isEditing}
         />
       );
     else if (field.type === "text_area" && field.placeholder)
@@ -103,6 +104,7 @@ function Form({ form }: { form: FormType }) {
           placeholder={field.placeholder}
           value={field.value}
           required={field.required}
+          disabled={isEditing}
         />
       );
     else if (field.type === "radio_group" && field.options)
@@ -113,6 +115,7 @@ function Form({ form }: { form: FormType }) {
           value={field.value}
           options={field.options}
           required={field.required}
+          disabled={isEditing}
         />
       );
     else if (field.type === "checkbox" && field.options)
@@ -122,6 +125,7 @@ function Form({ form }: { form: FormType }) {
           label={field.label}
           value={field.value}
           options={field.options}
+          disabled={isEditing}
         />
       );
     else if (
@@ -137,11 +141,14 @@ function Form({ form }: { form: FormType }) {
           value={field.value}
           options={field.options}
           required={field.required}
+          disabled={isEditing}
         />
       );
   };
 
-  return responded ? (
+  return !isEditing && !form.acceptingResponses ? (
+    <div>not accepting responses</div>
+  ) : responded ? (
     <ResponseRecorded multipleResponses={form.multipleResponses} />
   ) : (
     <ThemeProvider>
@@ -169,7 +176,7 @@ function Form({ form }: { form: FormType }) {
           )}
           <form ref={formRef} className="space-y-7" onSubmit={handleSubmit}>
             {formStructure.fields.map((field, index) =>
-              renderField(index, field)
+              renderField(index, field, isEditing)
             )}
             {!isEditing && (
               <div className="flex justify-end gap-x-2">
