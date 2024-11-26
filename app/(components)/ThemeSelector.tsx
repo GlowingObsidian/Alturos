@@ -10,40 +10,28 @@ import {
 } from "@/components/ui/select";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
+import { themes, backgrounds, borders } from "../services/colors";
+import { useThemeContext } from "../(context)/FormThemeContext";
+import axios from "axios";
+import { Form } from "@prisma/client";
 
-const themes = [
-  { name: "aqua", colors: ["#00FFFF", "#800080", "#0000FF", "#000000"] },
-  { name: "black", colors: ["#000000", "#FFFFFF", "#333333", "#666666"] },
-  { name: "bumblebee", colors: ["#FFFF00", "#FFA500", "#000080", "#333333"] },
-  { name: "cmyk", colors: ["#00FFFF", "#FF00FF", "#FFFF00", "#000000"] },
-  { name: "corporate", colors: ["#4B0082", "#0000FF", "#000000", "#FFFFFF"] },
-  { name: "cupcake", colors: ["#FFB6C1", "#FFA07A", "#20B2AA", "#000000"] },
-  { name: "cyberpunk", colors: ["#FF1493", "#00FFFF", "#800080", "#000000"] },
-  { name: "dark", colors: ["#4B0082", "#FF00FF", "#006400", "#FFFFFF"] },
-  { name: "dracula", colors: ["#FF69B4", "#00FFFF", "#FFA500", "#000000"] },
-  { name: "emerald", colors: ["#50C878", "#0000FF", "#FF0000", "#000000"] },
-  { name: "fantasy", colors: ["#800080", "#0000FF", "#FFA500", "#000000"] },
-];
+export default function ThemeSelector({ form }: { form: Form }) {
+  const theme = useThemeContext();
 
-const backgrounds = [
-  { name: "None", gradient: "" },
-  { name: "Sunset", gradient: "bg-gradient-to-r from-orange-500 to-blue-500" },
-  { name: "Fire", gradient: "bg-gradient-to-r from-red-500 to-yellow-500" },
-  { name: "Forest", gradient: "bg-gradient-to-r from-green-500 to-teal-500" },
-  { name: "Ocean", gradient: "bg-gradient-to-r from-blue-500 to-purple-500" },
-];
+  const currentTheme = theme!.currentTheme && { ...theme!.currentTheme };
 
-const styles = [
-  { name: "default", class: "" },
-  { name: "retro", class: "rounded-none" },
-  { name: "border", class: "rounded-lg" },
-];
-
-export default function ThemeSelector() {
-  const [selectedTheme, setSelectedTheme] = useState(themes[0]);
-  const [selectedBackground, setSelectedBackground] = useState(backgrounds[0]);
-  const [selectedStyle, setSelectedStyle] = useState(styles[0]);
+  const [selectedTheme, setSelectedTheme] = useState(
+    theme?.currentTheme.name || 0
+  );
+  const [selectedBackground, setSelectedBackground] = useState(
+    theme?.currentTheme.background || 0
+  );
+  const [selectedStyle, setSelectedStyle] = useState(
+    theme?.currentTheme.style || 0
+  );
   const [showAllBackgrounds, setShowAllBackgrounds] = useState(false);
+
+  const [status, setStatus] = useState("idle");
 
   const visibleBackgrounds = showAllBackgrounds
     ? backgrounds
@@ -55,12 +43,16 @@ export default function ThemeSelector() {
         <div>
           <h2 className="text-lg font-semibold mb-2">Themes</h2>
           <Select
-            value={selectedTheme.name}
-            onValueChange={(value) =>
-              setSelectedTheme(
-                themes.find((theme) => theme.name === value) || themes[0]
-              )
-            }
+            value={themes[selectedTheme].name}
+            onValueChange={(value) => {
+              const index = themes.findIndex((theme) => theme.name === value);
+              theme?.setTheme({
+                name: index,
+                background: currentTheme.background,
+                style: currentTheme.style,
+              });
+              setSelectedTheme(index);
+            }}
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a theme" />
@@ -89,15 +81,22 @@ export default function ThemeSelector() {
         <div>
           <h2 className="text-lg font-semibold mb-2">Background</h2>
           <div className="grid grid-cols-2 gap-2">
-            {visibleBackgrounds.map((bg) => (
+            {visibleBackgrounds.map((bg, index) => (
               <button
                 key={bg.name}
                 className={`h-12 rounded-md ${bg.gradient} ${
-                  selectedBackground.name === bg.name
+                  backgrounds[selectedBackground].name === bg.name
                     ? "ring-2 ring-blue-500"
                     : ""
                 }`}
-                onClick={() => setSelectedBackground(bg)}
+                onClick={() => {
+                  theme?.setTheme({
+                    name: currentTheme.name,
+                    background: index,
+                    style: currentTheme.style,
+                  });
+                  setSelectedBackground(index);
+                }}
               >
                 {bg.name === "None" && <span className="text-black">None</span>}
               </button>
@@ -127,54 +126,67 @@ export default function ThemeSelector() {
         <div>
           <h2 className="text-lg font-semibold mb-2">Style</h2>
           <div className="grid grid-cols-3 gap-2">
-            {styles.map((style) => (
+            {borders.map((border, index) => (
               <button
-                key={style.name}
-                className={`h-12 bg-gray-100 ${style.class} ${
-                  selectedStyle.name === style.name
+                key={border.name}
+                className={`h-12 bg-gray-100 ${border.class} ${
+                  borders[selectedStyle].name === border.name
                     ? "ring-2 ring-blue-500"
                     : ""
                 }`}
-                onClick={() => setSelectedStyle(style)}
+                onClick={() => {
+                  theme?.setTheme({
+                    name: currentTheme.name,
+                    background: currentTheme.background,
+                    style: index,
+                  });
+                  setSelectedStyle(index);
+                }}
               >
-                <span className="text-sm">{style.name}</span>
+                <span className="text-sm">{border.name}</span>
               </button>
             ))}
           </div>
         </div>
-      </div>
 
-      {/* <div className={`w-full md:w-1/2 p-6 ${selectedBackground.gradient}`}>
-        <Card
-          className={`${selectedStyle.class}`}
-          style={{
-            backgroundColor: selectedTheme.colors[2],
-            borderColor: selectedTheme.colors[3],
-            borderWidth:
-              selectedStyle.name === "border"
-                ? "4px"
-                : selectedStyle.name === "retro"
-                ? "2px"
-                : "0px",
+        <Button
+          onClick={() => {
+            setStatus("saving");
+            axios
+              .patch(`/api/form/${form.id}`, {
+                theme:
+                  currentTheme.name == 0 &&
+                  currentTheme.background == 0 &&
+                  currentTheme.style == 0
+                    ? null
+                    : JSON.stringify(currentTheme),
+              })
+              .then(() => {
+                setStatus("saved");
+                setTimeout(() => {
+                  setStatus("idle");
+                }, 2000);
+              })
+              .catch(() => {
+                setStatus("error");
+                setTimeout(() => {
+                  setStatus("idle");
+                }, 2000);
+              });
           }}
+          disabled={status === "saving"}
         >
-          <CardHeader>
-            <CardTitle style={{ color: selectedTheme.colors[0] }}>
-              Welcome to our platform
-            </CardTitle>
-            <CardDescription style={{ color: selectedTheme.colors[1] }}>
-              This card reflects your chosen styles
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p style={{ color: selectedTheme.colors[3] }}>
-              This is a preview of how your component will look with the
-              selected theme, background, and style. Feel free to experiment
-              with different combinations!
-            </p>
-          </CardContent>
-        </Card>
-      </div> */}
+          {status === "idle" ? (
+            <span>Save</span>
+          ) : status === "saving" ? (
+            <span>Saving...</span>
+          ) : status === "saved" ? (
+            <span>Saved!</span>
+          ) : (
+            <span>Error!</span>
+          )}
+        </Button>
+      </div>
     </div>
   );
 }

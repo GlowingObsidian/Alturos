@@ -14,14 +14,15 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import axios from "axios";
 import { LogIn, LogOut } from "lucide-react";
 import { notFound, usePathname } from "next/navigation";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { useThemeContext } from "../(context)/FormThemeContext";
 import FormCheckBox from "./formFields/FormCheckBox";
 import FormInput from "./formFields/FormInput";
 import FormRadioGroup from "./formFields/FormRadioGroup";
 import FormSelect from "./formFields/FormSelect";
 import FormTextArea from "./formFields/FormTextArea";
 import ResponseRecorded from "./ResponseRecorded";
-import { ThemeProvider } from "next-themes";
+import { backgrounds, borders, themes } from "../services/colors";
 
 export interface Field {
   label: string;
@@ -53,6 +54,56 @@ function Form({ form }: { form: FormType }) {
   if (isEditing) {
     if (userId && form.userId !== userId) notFound();
   }
+
+  const theme = useThemeContext();
+
+  const savedTheme = form.theme ? JSON.parse(form.theme) : null;
+
+  const formTheme = {
+    name: themes[
+      !isEditing && savedTheme ? savedTheme.name : theme?.currentTheme.name || 0
+    ].name,
+    title:
+      themes[
+        !isEditing && savedTheme
+          ? savedTheme.name
+          : theme?.currentTheme.name || 0
+      ].colors[0],
+    description:
+      themes[
+        !isEditing && savedTheme
+          ? savedTheme.name
+          : theme?.currentTheme.name || 0
+      ].colors[1],
+    bg: themes[
+      !isEditing && savedTheme ? savedTheme.name : theme?.currentTheme.name || 0
+    ].colors[2],
+    general:
+      themes[
+        !isEditing && savedTheme
+          ? savedTheme.name
+          : theme?.currentTheme.name || 0
+      ].colors[3],
+  };
+  const formBackground =
+    backgrounds[
+      !isEditing && savedTheme
+        ? savedTheme.background
+        : theme?.currentTheme.background || 0
+    ];
+
+  useEffect(() => {
+    if (!isEditing)
+      document.body.className =
+        document.body.className + " " + formBackground.gradient;
+  });
+
+  const formBorder =
+    borders[
+      !isEditing && savedTheme
+        ? savedTheme.style
+        : theme?.currentTheme.style || 0
+    ];
 
   const formRef = useRef<HTMLFormElement>(null);
   const formStructure: GeneratedForm = JSON.parse(form.data);
@@ -146,16 +197,28 @@ function Form({ form }: { form: FormType }) {
       );
   };
 
-  return !isEditing && !form.acceptingResponses ? (
-    <div>not accepting responses</div>
-  ) : responded ? (
+  return !isEditing && responded ? (
     <ResponseRecorded multipleResponses={form.multipleResponses} />
   ) : (
-    <ThemeProvider>
-      <Card className="container mx-auto max-w-xl">
+    <div
+      className={`p-10 w-full ${isEditing && formBackground.gradient} ${
+        isEditing && "rounded-xl"
+      }`}
+    >
+      <Card
+        className={`container mx-auto max-w-xl ${formBorder.class}`}
+        style={{
+          color: formTheme.general,
+          backgroundColor: formTheme.bg,
+        }}
+      >
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">{formStructure.name}</CardTitle>
-          <CardDescription>{formStructure.description}</CardDescription>
+          <CardTitle className="text-2xl" style={{ color: formTheme.title }}>
+            {formStructure.name}
+          </CardTitle>
+          <CardDescription style={{ color: formTheme.description }}>
+            {formStructure.description}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           {!isEditing && !form.multipleResponses && !userId && (
@@ -206,7 +269,7 @@ function Form({ form }: { form: FormType }) {
           </form>
         </CardContent>
       </Card>
-    </ThemeProvider>
+    </div>
   );
 }
 

@@ -6,8 +6,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import ThemeSelector from "./ThemeSelector";
 import { Palette } from "lucide-react";
+import { Form } from "@prisma/client";
 
-function FormStyleButton() {
+function FormStyleButton({ form }: { form: Form }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -17,7 +18,7 @@ function FormStyleButton() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mx-2">
-        <ThemeSelector />
+        <ThemeSelector form={form} />
       </DropdownMenuContent>
     </DropdownMenu>
   );

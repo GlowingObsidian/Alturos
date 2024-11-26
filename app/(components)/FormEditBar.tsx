@@ -16,7 +16,7 @@ function FormEditBar({ form, url }: { form: Form; url: string }) {
         <AcceptResponsesToggle form={form} />
       </div>
       <div className="flex gap-x-2 gap-y-2 flex-wrap-reverse">
-        <FormStyleButton />
+        <FormStyleButton form={form} />
         <UpdateFormDialog form={form} />
         <FormShare url={url} formId={form.id} />
         <DeleteFormButton form={form} />

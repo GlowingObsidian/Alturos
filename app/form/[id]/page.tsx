@@ -1,6 +1,7 @@
 import AlreadyResponded from "@/app/(components)/AlreadyResponded";
 import FloatingBadge from "@/app/(components)/FloatingBadge";
 import Form, { GeneratedForm } from "@/app/(components)/Form";
+import NotAcceptingResponses from "@/app/(components)/NotAcceptingResponses";
 import prisma from "@/prisma/client";
 import { auth } from "@clerk/nextjs/server";
 import { Metadata } from "next";
@@ -44,6 +45,13 @@ async function page({
 
   if (!form) return notFound();
 
+  if (!form.acceptingResponses)
+    return (
+      <div className="p-10">
+        <NotAcceptingResponses />
+      </div>
+    );
+
   const { userId } = auth();
 
   if (userId && !form.multipleResponses) {
@@ -64,7 +72,7 @@ async function page({
   }
 
   return (
-    <div className="p-10 min-h-screen">
+    <div className="h-screen">
       <Form form={form} />
       <FloatingBadge />
     </div>

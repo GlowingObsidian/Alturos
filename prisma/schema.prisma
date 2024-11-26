@@ -23,6 +23,7 @@ model Form {
   multipleResponses  Boolean    @default(false)
   acceptingResponses Boolean    @default(false)
   shareResponses     Boolean    @default(false)
+  theme              String?
   Response           Response[]
 }
 
